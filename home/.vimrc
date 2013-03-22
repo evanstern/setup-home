@@ -8,29 +8,14 @@ set nocompatible
 " Ensure that PYTHONPATH is not set (this is a problem with jedi-vim)
 :let $PYTHONPATH = ""
 
+" Pathogen {{{
 " Infect ourselves with plugin goodness!
 filetype off                    " Force reloading *after* pathogen is loaded
 execute pathogen#infect()
 call pathogen#helptags()
 filetype plugin indent on       " Enable plugin/indenting detection
 syntax enable                   " Use syntax coloring
-
-"======================================================================"
-"   Pre-setup Initialization // Defaults                               "
-"======================================================================"
-
-" Do not load any plugins by default.
-set noloadplugins
-
-" Manually load the VIMRUNTIME plugins (NOT THE ONES IN THE ~/.vim/plugin
-" folder)
-runtime! plugin/*.vim
-
-" List of plugins which have been loaded
-let g:PluginList = []
-
-" Set the default colorscheme.  It might be reset in another plugin
-"colorscheme koehler
+" }}}
 
 " Editing behavior {{{
 set showmode                    " Show the current mode
@@ -57,7 +42,7 @@ set formatoptions=crqn          " c = Auto-Wrap comments to 'textwidth'
                                 " q = Allow formatting of comments with 'gq
                                 " n = Recognize numbered lists during formatting
 
-" F12 puts you into 'paste mode' that will let you paste text without it being
+" F12 puts you into 'paste mode' that will let you paste text from the buffer without it being
 " autoindented. Super useful.
 nnoremap <F12> :set invpaste paste?<CR>
 set pastetoggle=<F12>
@@ -107,7 +92,6 @@ set tags=./tags;
 set ruler                       " Show the cursor position in the status bar
 " }}}
 
-
 " System specific {{{
 " MSWIN is *true* if we are in a windows environment
 let s:MSWIN = has("win16") || has("win32") || has("win64")
@@ -150,8 +134,11 @@ else
 endif
 let Tlist_Display_Prototype= 1
 let s:TagListOn = executable(Tlist_Ctags_Cmd)
-noremap     <silent>    <F11>   <ESC><ESC>:Tlist<CR>
-inoremap    <silent>    <F11>   <ESC><ESC>:Tlist<CR>
+noremap     <silent>    <F11>       <ESC><ESC>:Tlist<CR>
+inoremap    <silent>    <F11>       <ESC><ESC>:Tlist<CR>
+
+" NERDtree
+noremap     <silent>    <LEADER>nt  <ESC><ESC>:NERDTreeToggle<CR>
 " }}}
 
 " Functions {{{
@@ -182,319 +169,51 @@ function! SaveXY()
 endfunction
 " }}}
 
-" EnablePlugin {{{
-"======================================================================"
-"                                                                      "
-"      Function: EnablePlugin                                          "
-"                                                                      "
-"   Description: Checks for the existance of a plugin and enables it   "
-"                if possible.                                          "
-"                                                                      "
-"                The s:PluginPath directory is used as the base        "
-"                directory when looking for the plugin to enable.      "
-"                                                                      "
-"                Adds the filename of the plugin to PluginList which   "
-"                used when setting up specific options for plugins.    "
-"                                                                      "
-"          Args: <string> plugin -- The name of the plugin             "
-"                                                                      "
-"======================================================================"
-function! EnablePlugin( plugin )
-
-    if count( g:PluginList, a:plugin ) != 0
-        return 0
-    endif
-
-    if filereadable( s:PluginPath.a:plugin )
-        exe "source ".s:PluginPath.a:plugin
-        let g:PluginList = add( g:PluginList, a:plugin )
-    else
-        echohl Error
-        echo "Plugin ".s:PluginPath.a:plugin." was not read."
-        echohl None
-    endif
-
-endfunction
-" }}}
-
-" ConfigurePluginSettings {{{
-"======================================================================="
-"                                                                       "
-"      Function: ConfigurePluginSettings                                "
-"                                                                       "
-"   Description: Configures the settings for a specific plugin.         "
-"                In order to use this method effectively, any new plugin"
-"                must have its settings taken care of inside its own if "
-"                statement.                                             "
-"                This means that any time a new plugin is added, a new  "
-"                section should be written here.                        "
-"                                                                       "
-"          Args: <string> plugin -- The name of the plugin              "
-"                                                                       "
-"======================================================================="
-function! ConfigurePluginSettings( plugin )
-
-    "==================================================================
-    " NERD Commenter
-    if a:plugin == 'NERD_commenter.vim'
-
-    "
-    "==================================================================
-
-    "==================================================================
-    " Alternate Header / Source Files ( a.vim )
-    elseif a:plugin == 'a.vim'
-
-    "
-    "==================================================================
-
-    "==================================================================
-    " TAG LIST (taglist.vim)
-    elseif a:plugin == 'taglist.vim'
-        if s:MSWIN
-            let Tlist_Ctags_Cmd='C:\\unix\\bin\\ctags.exe'
-        else
-            let Tlist_Ctags_Cmd='/usr/bin/ctags'
-        endif
-        let Tlist_Display_Prototype= 1
-        let s:TagListOn = executable(Tlist_Ctags_Cmd)
-        noremap     <silent>    <F11>   <ESC><ESC>:Tlist<CR>
-        inoremap    <silent>    <F11>   <ESC><ESC>:Tlist<CR>
-    "
-    "==================================================================
-
-    "==================================================================
-    " NERD Tree (NERD_tree.vim)
-    elseif a:plugin == 'NERD_tree.vim'
-
-        noremap     <silent>    <F8>    <ESC><ESC>:NERDTreeToggle<CR>
-        inoremap    <silent>    <F8>    <ESC><ESC>:NERDTreeToggle<CR>
-
-    "
-    "==================================================================
-
-    "==================================================================
-    " CSUPPORT (c.vim)
-    elseif a:plugin == 'c.vim'
-        let g:C_FormatDate      = '%D'
-        let g:C_FormatYear      = '%Y'
-        "let g:C_AuthorName        = 'E Stern'
-        "let g:C_AuthorRef         = ''
-        "let g:C_Email             = 'estern@wms.com'
-        "let g:C_Company           = 'WMS'
-        "let g:C_CopyrightHolder   = 'WMS'
-
-    "
-    "==================================================================
-
-    "==================================================================
-    " PROJECT (project.vim)
-    elseif a:plugin == 'project.vim'
-
-    "
-    "==================================================================
-
-    "==================================================================
-    " COLOR THEMES (themes.vim)
-    elseif a:plugin == 'themes.vim'
-
-        colorscheme koehler
-
-    "
-    "==================================================================
-
-    "==================================================================
-    " COLOR SAMPLE PACK (color_sample_pack.vim)
-    elseif a:plugin == 'color_sample_pack.vim'
-
-        colorscheme candy
-
-    "
-    "==================================================================
-
-    "==================================================================
-    "
-    elseif a:plugin == 'bufexplorer.vim'
-
-    "
-    "==================================================================
-
-    endif
-
-endfunction
-" }}}
-
-" Enable plugins {{{
-"call EnablePlugin('taglist.vim')
-"call EnablePlugin('showmarks.vim')
-"call EnablePlugin('themes.vim')
-"call EnablePlugin('c.vim')
-"call EnablePlugin('a.vim')
-"call EnablePlugin('doxygen-support.vim')
-"call EnablePlugin('cscope_maps.vim')
-"call EnablePlugin('project.vim')
-"call EnablePlugin('bufexplorer.vim')
-"call EnablePlugin('FeralToggleCommentify.vim')
-"call EnablePlugin('screen.vim')
-"call EnablePlugin('color_sample_pack.vim')
-"call EnablePlugin('NERD_tree.vim')
-"call EnablePlugin('xml.vim')
-"call EnablePlugin('NERD_commenter.vim')
-"call EnablePlugin('vcscommand.vim')
-"call EnablePlugin('vcsbzr.vim')
-"call EnablePlugin('vcscvs.vim')
-"call EnablePlugin('vcsgit.vim')
-"call EnablePlugin('vcshg.vim')
-"call EnablePlugin('vcssvk.vim')
-"call EnablePlugin('vcssvn.vim')
-"call EnablePlugin('AlignPlugin.vim')
-
-" Turn on all settings for the enabled plugins.  Any plugin-config should be
-" done inside the ConfigurePluginSettings function
-"
-"for plugin in g:PluginList
-"    call ConfigurePluginSettings(plugin)
-"endfor
-" }}}
-
-
-
 " Filetype Specific {{{
 if s:Au
     augroup filetype
 
-        "===
-        " Try to read a skel file for this filetype
-        " Set up <ctrl-P> for going to next highlighted %VAR%
-        "========
-        "autocmd BufNewFile * call LoadTemplate()
-        "nnoremap <c-p> /%\u.\{-1,}%<cr>c/%/e<cr>
-        "inoremap <c-p> <ESC>/%\u.\{-1,}%<cr>c/%/e<cr>
-
-        "===
         " Remove trailing whitespace
-        "========
         autocmd BufWritePre * :%s/\s\+$//e
 
-        "====
         " Text Files
-        "=========
         autocmd BufRead *.txt set textwidth=72
 
-        "====
         " PSQL temp files
-        "========
         autocmd BufRead,BufNewFile *\.edit\.* set filetype=sql
 
-        "====
         " Perl Files
-        "=========
         autocmd BufRead *.pl
                 \ vmap <silent> <F9> :s/^.\\|^$/#\ /g<CR> |
                 \ vmap <silent> <F10> :s/\(^\ *\)#/\1/g<CR>
 
-        "===
         " Python Files
-        "=========
         autocmd FileType python let PYTHONPATH='/usr/lib/python2.5'
-"        autocmd FileType python setlocal omnifunc=pysmell#Complete
-"        autocmd BufNewFile,BufRead *.py call EnablePlugin("pysmell.vim")
-"        autocmd BufNewFile,BufRead *.py call EnablePlugin("pydoc.vim")
-"        autocmd FileType python call EnablePlugin("python.vim")
-"        autocmd BufNewFile,BufRead *.py call EnablePlugin("python_fold.vim")
-"        autocmd BufNewFile,BufRead *.py exe "source ".s:PluginPath."python_fold.vim"
         autocmd FileType python inoremap <Nul> <C-x><C-o>
         autocmd FileType python set formatoptions=cqro
         autocmd FileType python set textwidth=79
-        "autocmd FileType python let g:pysmell_matcher='case-insensitive'
         autocmd Filetype python set tabstop=4
 
-        "====
-        " Set XML Filetype on certain files
-        "=========
-        "au BufRead,BufNewFile *.scs,*.res,*.tpscene setfiletype xml
-
-        "====
         " Set XHTML on turbogears .kid files
-        "========
         autocmd BufRead,BufNewFile *.kid
                 \ setfiletype xhtml |
                 \ set fo-=c
 
-
-        "====
-        " C++ files
-        "=========
-        ""Set the colorscheme for cpp file editing
-        "autocmd BufWritePost,BufFilePost,BufNewFile,BufRead
-        "        \ *.cpp,*.h let psc_style='defdark' | colorscheme koehler
-        "" Get doxygen.vim from:
-        "" http://www.vim.org/scripts/script.php?script_id=5
-        "autocmd BufEnter
-        "        \ *.cpp,*.h source $VIMSTORE/syntax/doxygen.vim
-        "" Get c.vim from:
-        "" http://www.vim.org/scripts/script.php?script_id=21
-        "autocmd BufNewFile,BufRead *.cpp,*.h call EnablePlugin("c.vim")
-        "" Set comment string
-        "autocmd BufNewFile,BufRead,BufFilePost,BufWritePost
-        "        \ *.cpp,*.h set comments=s1:/*,mb:*,ex:*/,://
-        "" Set textwidth to 78
-        "autocmd BufNewFile,BufRead,BufFilePost,BufWritePost
-        "        \ *.cpp,*.h set textwidth=78
-        "" Set c style indenting
-        "autocmd BufNewFile,BufRead,BufFilePost,BufWritePost
-        "        \ *.cpp,*.h set cindent |
-        "        \ set cino=:0,b1,g0
-        "" Set Omnicpp settings
-        "autocmd BufNewFile,BufRead *.cpp,*.h
-        "        \ nmap <F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR> |
-        "        \ let OmniCpp_NamespaceSearch=2 |
-        "        \ let OmniCpp_ShowPrototypeInAbbr=1 |
-        "        \ let OmniCpp_DefaultNamespaces=["std", "_GLIBCXX_STD"] |
-        "        \ let OmniCpp_MayCompleteScope=1 |
-        "        \ let OmniCpp_SelectFirstItem=2 |
-        "        \ let OmniCpp_DisplayMode = 1 |
-        "        \ source ${HOME}/.vim/.tagloader.vim |
-        "        \ set completeopt=menu,preview
-        "autocmd BufNewFile,BufRead *.cpp,*.h
-        "        \ inoremap [ []<Left> |
-        "        \ vnoremap [ s[]<Esc>P<Right>%
-        "" Close the helper window for omnicpp when done
-        "autocmd CursorMovedI *.cpp,*.h if pumvisible() == 0|pclose|endif
-        "autocmd InsertLeave *.cpp,*.h if pumvisible() == 0|pclose|endif
-        "
-        ""====
-        "" Makefile
-        ""=========
-        "autocmd BufWritePost,BufFilePost,BufNewFile,BufRead,BufReadPost
-        "        \ Makefile set noexpandtab
-
-        "====
         " Vim Files
-        "=========
         autocmd BufRead,BufNewFile *.vim set comments=fb:-,:\"
         autocmd BufRead,BufNewFile *.vim set textwidth=78
 
-        "====
         " Javascript
-        "========
         autocmd BufRead,BufNewFile *.js set ft=javascript syntax=javascript
         autocmd BufRead,BufNewFile *.js set comments=sr:/*,mb:*,ex:*/,://
-"        autocmd BufRead,BufNewFile *.js call EnablePlugin('MyJavaScriptLint.vim')
 
-        "====
         " JSON files
-        "========
         autocmd BufRead, BufNewFile *.json set ft=javascript syntax=javascript
 
-        "====
         " Make sure that there fo does not have the t option
-        "========
         autocmd Filetype * set fo-=t
 
-        "==
         " RST files
-        "========
         autocmd FileType rst
             \ set formatoptions=want |
             \ set textwidth=82 |
@@ -517,7 +236,7 @@ vmap sb "zdi<b><C-R>z</b><ESC>
 vmap sdi "zdi<div><C-R>z</div><ESC>
 vmap ssp "zdi<span><C-R>z</span><ESC>
 vmap scc "zdi<!--<C-R>z--><ESC>
-inoremap <Leader>d <ESC>:r! date +\%m/\%d/\%Y\ \%H:\%M <CR>i
+"inoremap <Leader>d <ESC>:r! date +\%m/\%d/\%Y\ \%H:\%M <CR>i
 " }}}
 
 " Entry and Exit {{{
@@ -531,4 +250,4 @@ if s:Au && s:GUI
                      \ | endif
 endif
 " }}}
-
+" }}}
