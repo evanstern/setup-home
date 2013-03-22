@@ -1,0 +1,22 @@
+#!/bin/bash
+
+function print_usage {
+    echo "    $1"
+    echo "    usage: mvdt source [dest]"
+    echo ""
+    exit
+}
+
+if [ $# -lt 1 ] ; then
+    print_usage "Not all arguments supplied"
+fi
+
+src=$1
+
+if [ $# -eq 1 ] ; then
+    dest=$1
+else
+    dest=$2
+fi
+
+/bin/mv ${src} ${dest}.`/bin/date +%Y_%m_%d_%s`

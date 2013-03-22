@@ -1,0 +1,35 @@
+#!/bin/bash
+
+function print_usage {
+    echo "    $1"
+    echo "    usage: print_range file line_number line_number"
+    echo ""
+    exit
+}
+
+if [ ! -x '/usr/bin/awk' ] ; then
+    print_usage "/usr/bin/awk needs to be executable"
+fi
+
+if [ $# -ne 3 ] ; then
+    print_usage "Not all parameters supplied"
+fi
+
+if [ ! -e $1 ] ; then
+    print_usage "'$1' is not a file"
+fi
+
+if [ -n "$( echo "$2" | sed 's/[0-9]//g' )" ] ; then
+    print_usage "'$2' is not a number"
+fi
+
+if [ -n "$( echo "$3" | sed 's/[0-9]//g' )" ] ; then
+    print_usage "'$3' is not a number"
+fi
+
+if [ $3 -lt $2 ] ; then
+    print_usage "The third parameter must be greater than the second parameter"
+fi
+
+cat -n ${1} | /usr/bin/awk "NR>=$2&&NR<=$3"
+

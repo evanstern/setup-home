@@ -1,0 +1,44 @@
+#!/bin/bash
+
+usage_txt="
+Usage: `basename $0` file1 file2
+"
+
+# Make sure the arguments are files or directories
+if [ -z $1 ] || [ -z $2 ]; then
+    echo "ERROR: I need two files or directories as arguments."
+    echo "${usage_txt}"
+    exit
+fi
+
+# Check to see if the arguments exist in the file system at all
+if [ ! -e $1 ] || [ ! -e $2 ]; then
+    echo "ERROR: All arguments must exist on the file system."
+    echo "${usage_txt}"
+    exit
+fi
+
+# If the first argument is a file make sure the second is also
+if [ -f $1 ]; then
+    if [ ! -f $2 ]; then
+        echo "ERROR: Both arguments must be either files or directories."
+        echo "${usage_txt}"
+        exit
+    fi
+fi
+
+# If the first argument is a directory make sure the second is also
+if [ -d $1 ]; then
+    if [ ! -d $2 ]; then
+        echo "ERROR: Both arguments must be either files or directories."
+        echo "${usage_txt}"
+        exit
+    fi
+fi
+
+# Swap the files
+mv $1 $1.tmp
+mv $2 $1
+mv $1.tmp $2
+
+
