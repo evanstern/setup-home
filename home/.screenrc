@@ -1,0 +1,38 @@
+# Evan's homemade .screenrc.
+
+# Start Initial Screens
+screen screen_start.sh bash
+title "bazman"
+screen screen_start.sh bash
+title "bash 1"
+screen screen_start.sh bash
+title "bash 2"
+screen screen_start.sh bash
+title "editor"
+screen screen_start.sh bash
+title "tg-admin"
+screen screen_start.sh bash
+title "psql"
+screen screen_start.sh bash
+title "documentation"
+
+# Draw that blue and red bar across the bottom of the terminal, with the cute
+# stuff like the window names and system CPU load.
+hardstatus on
+hardstatus alwayslastline
+hardstatus string "%{.bW}%-w%{.rW}%n %t%{-}%+w %=%{..G} %H %l %{..Y} %m/%d %C%a "
+
+# Let me scroll back a thousand lines or so.
+defscrollback 1024
+
+# terminfo and termcap for nice 256 color terminal
+# allow bold colors - necessary for some reason
+attrcolor b ".I"
+
+# tell screen how to set colors. AB = background, AF=foreground
+termcapinfo mlterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+
+# erase background with current bg color
+defbce "on"
+
+escape ^Oo
