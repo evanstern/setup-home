@@ -123,3 +123,6 @@ alias getcases='sfcl --status="New,Open" --release="Weekly Release" --owner="Eva
 export PATH=/home/evan/SenchaSDKTools:$PATH
 
 export SENCHA_SDK_TOOLS_2_0_0_BETA3="/home/evan/SenchaSDKTools"
+
+# Use 256color mode
+export TERM="xterm-256color"
