@@ -251,3 +251,7 @@ if s:Au && s:GUI
 endif
 " }}}
 " }}}
+
+" Force 256 color mode
+let &t_Co=256
+
