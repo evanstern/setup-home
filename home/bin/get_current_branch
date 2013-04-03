@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ -z $ACTIVE_PROJECT_DIR ]; then
+    echo "Inactive"
+    exit
+fi
+
+cd ${ACTIVE_PROJECT_DIR}
+
+#BRANCH="`git status | grep '# On branch' | sed 's/#\ On\ branch\ //'`"
+BRANCH="`git branch | grep '\*' | sed 's/\*\ //'`"
+
+echo $BRANCH
