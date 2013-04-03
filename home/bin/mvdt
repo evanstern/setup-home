@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# mvdt - Move a file and append the date.
+# Author: Evan Stern (suriansg@gmail.com)
+#
+# Just plop this into your path and use it.
+#
+# Example:
+#   $ mvdt my_file
+#   $ ls
+#   test.2013_04_03_1364998340
+
 function print_usage {
     echo "    $1"
     echo "    usage: mvdt source [dest]"
