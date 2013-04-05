@@ -139,6 +139,18 @@ inoremap    <silent>    <F11>       <ESC><ESC>:Tlist<CR>
 
 " NERDtree
 noremap     <silent>    <LEADER>nt  <ESC><ESC>:NERDTreeToggle<CR>
+
+" Syntastic
+let g:syntastic_javascript_checkers=['jsl']
+let g:syntastic_enable_signs=1
+let g:syntastic_auto_loc_list=1
+let g:syntastic_auto_jump=1
+let g:syntastic_javascript_jsl_conf=$HOME."/.jslconf"
+
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
 " }}}
 
 " Functions {{{
