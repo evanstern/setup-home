@@ -147,6 +147,8 @@ let g:syntastic_auto_loc_list=1
 let g:syntastic_auto_jump=1
 let g:syntastic_javascript_jsl_conf=$HOME."/.jslconf"
 
+let g:syntastic_python_checkers=[]
+
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
 "set statusline+=%*
@@ -265,5 +267,5 @@ endif
 " }}}
 
 " Force 256 color mode
-let &t_Co=256
+"let &t_Co=256
 

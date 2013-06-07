@@ -1,6 +1,6 @@
 [user]
     name = Evan Stern
-    email = evan@onshift.com
+	email = estern@onshift.com
 
 [core]
     pager = less -FRSX
@@ -23,6 +23,8 @@
     br = branch
     sta = stash
             nlog = log --no-merges
+	purr = pull --rebase
+	amend = commit --amend
 [color "sh"]
             branch = green
 
