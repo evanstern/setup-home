@@ -86,7 +86,7 @@ set wildmenu                    " Use bash-like completion syntax for commandlin
 set wildignore=*.swp,*.pyc      " Ignore these during autocompletion
 set visualbell                  " Silence the bell sound, flash screen instead.
 set showcmd                     " Show partial commands
-set nomodeline                  " Do not allow other files to modify this one
+"set nomodeline                  " Do not allow other files to modify this one
 set magic                       " Allow regex in search strings
 set tags=./tags;
 set ruler                       " Show the cursor position in the status bar
@@ -213,6 +213,13 @@ if s:Au
                 \ setfiletype xhtml |
                 \ set fo-=c
 
+        " HTML
+        autocmd BufRead,BufNewFile *.html
+                \ setfiletype htmldjango
+                \ set ts=2
+                \ set sw=2
+                \ echo "yep"
+
         " Vim Files
         autocmd BufRead,BufNewFile *.vim set comments=fb:-,:\"
         autocmd BufRead,BufNewFile *.vim set textwidth=78
@@ -220,9 +227,15 @@ if s:Au
         " Javascript
         autocmd BufRead,BufNewFile *.js set ft=javascript syntax=javascript
         autocmd BufRead,BufNewFile *.js set comments=sr:/*,mb:*,ex:*/,://
+        autocmd CursorMoved,CursorMovedI *.js
+            \ if match(getline("."), "^.*\/\/\ \ \ \ ") >= 0 |
+            \     setlocal textwidth=65 |
+            \ else |
+            \     setlocal textwidth=78 |
+            \ endif
 
         " JSON files
-        autocmd BufRead, BufNewFile *.json set ft=javascript syntax=javascript
+"        autocmd BufRead, BufNewFile *.json set ft=javascript syntax=javascript
 
         " Make sure that there fo does not have the t option
         autocmd Filetype * set fo-=t
@@ -232,6 +245,8 @@ if s:Au
             \ set formatoptions=want |
             \ set textwidth=82 |
             \ set nowrap
+
+        autocmd BufRead,BufNewFile */static/*.html set filetype=htmldjango
 
     augroup END
 
@@ -265,6 +280,7 @@ if s:Au && s:GUI
 endif
 " }}}
 " }}}
+
 
 " Force 256 color mode
 "let &t_Co=256
