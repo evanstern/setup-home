@@ -44,7 +44,8 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 export PATH=$PATH:$HOME/ctags/bin:$HOME/bin
-
+export PATH="./node_modules/.bin:$PATH"
+export PATH=$HOME/local/bin:$PATH
 
 if [ "$color_prompt" = yes ]; then
     PS1=`ps1.sh`
@@ -89,7 +90,7 @@ fi
 #source /home/staffknex/scripts/virtualenvwrapper-1.16/virtualenvwrapper_bashrc
 
 export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/Devel
+export PROJECT_HOME=$HOME/projects
 source /usr/local/bin/virtualenvwrapper.sh
 
 # some more ls aliases
@@ -118,11 +119,9 @@ export MANPATH=${MANPATH}:${HOME}/projects/staffknex/bazman/sfawesome/doc
 
 alias getcases='sfcl --status="New,Open" --release="Weekly Release" --owner="Evan"'
 
-#export PYTHONPATH=${PYTHONPATH}:${HOME}/projects/staffknex/bazman/bazman
-
-export PATH=/home/evan/SenchaSDKTools:$PATH
-
-export SENCHA_SDK_TOOLS_2_0_0_BETA3="/home/evan/SenchaSDKTools"
-
 # Use 256color mode
 export TERM="xterm-256color"
+
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
