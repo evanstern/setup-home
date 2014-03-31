@@ -1,11 +1,18 @@
 #!/bin/bash
 
-if [ -z $ACTIVE_PROJECT_DIR ]; then
+if [[ -z $VIRTUAL_ENV || ! -f ${VIRTUAL_ENV}/.project ]]; then
     echo "Inactive"
     exit
 fi
 
-cd ${ACTIVE_PROJECT_DIR}
+PROJECT=$(<${VIRTUAL_ENV}/.project)
+
+cd $PROJECT
+
+if [[ ! -d ${PROJECT}/.git ]]; then
+    echo "No Git"
+    exit
+fi
 
 #BRANCH="`git status | grep '# On branch' | sed 's/#\ On\ branch\ //'`"
 BRANCH="`git branch | grep '\*' | sed 's/\*\ //'`"
