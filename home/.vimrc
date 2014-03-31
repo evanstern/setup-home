@@ -141,7 +141,9 @@ inoremap    <silent>    <F11>       <ESC><ESC>:Tlist<CR>
 noremap     <silent>    <LEADER>nt  <ESC><ESC>:NERDTreeToggle<CR>
 
 " Syntastic
-let g:syntastic_javascript_checkers=['jsl']
+" let g:syntastic_javascript_checkers=['jsl']
+let g:syntastic_javascript_checkers=['jshint']
+let g:syntastic_less_checkers=[]
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_auto_jump=1
@@ -215,10 +217,9 @@ if s:Au
 
         " HTML
         autocmd BufRead,BufNewFile *.html
-                \ setfiletype htmldjango
-                \ set ts=2
-                \ set sw=2
-                \ echo "yep"
+                \ set filetype=htmldjango |
+                \ set ts=2 |
+                \ set sw=2 |
 
         " Vim Files
         autocmd BufRead,BufNewFile *.vim set comments=fb:-,:\"
@@ -227,6 +228,8 @@ if s:Au
         " Javascript
         autocmd BufRead,BufNewFile *.js set ft=javascript syntax=javascript
         autocmd BufRead,BufNewFile *.js set comments=sr:/*,mb:*,ex:*/,://
+        autocmd BufRead,BufNewFile *.js set ts=2 sw=2
+        autocmd BufRead,BufNewFile */OnShift*/**/*.js set ts=4 sw=4
         autocmd CursorMoved,CursorMovedI *.js
             \ if match(getline("."), "^.*\/\/\ \ \ \ ") >= 0 |
             \     setlocal textwidth=65 |
@@ -235,7 +238,7 @@ if s:Au
             \ endif
 
         " JSON files
-"        autocmd BufRead, BufNewFile *.json set ft=javascript syntax=javascript
+        autocmd BufRead,BufNewFile *.json set ts=2 sw=2
 
         " Make sure that there fo does not have the t option
         autocmd Filetype * set fo-=t
