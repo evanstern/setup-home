@@ -1,20 +1,21 @@
 #!/bin/bash
 
-if [[ -z $VIRTUAL_ENV || ! -f ${VIRTUAL_ENV}/.project ]]; then
-    echo "Inactive"
-    exit
+#if [[ -z $VIRTUAL_ENV || ! -f ${VIRTUAL_ENV}/.project ]]; then
+#    echo "Inactive"
+#    exit
+#fi
+
+if [[ $VIRTUAL_ENV ]]; then
+    PROJECT=$(<${VIRTUAL_ENV}/.project)
+    cd $PROJECT
 fi
 
-PROJECT=$(<${VIRTUAL_ENV}/.project)
+BRANCH="`git branch 2>/dev/null | grep '\*' | sed 's/\*\ //'`"
 
-cd $PROJECT
-
-if [[ ! -d ${PROJECT}/.git ]]; then
+if [[ -z $BRANCH ]]; then
     echo "No Git"
     exit
 fi
 
-#BRANCH="`git status | grep '# On branch' | sed 's/#\ On\ branch\ //'`"
-BRANCH="`git branch | grep '\*' | sed 's/\*\ //'`"
-
 echo $BRANCH
+
